@@ -1,0 +1,143 @@
+
+services:
+  auth-db:
+    image: postgres:15
+    container_name: auth-db
+    environment:
+      POSTGRES_DB: auth_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sdebackend
+    ports:
+      - "5432:5432"
+    volumes:
+      - auth_data:/var/lib/postgresql/data
+      - ./scripts/init-auth-db.sql:/docker-entrypoint-initdb.d/init.sql
+
+  posts-db:
+    image: postgres:15
+    container_name: posts-db
+    environment:
+      POSTGRES_DB: posts_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sdebackend
+    ports:
+      - "5433:5432"
+    volumes:
+      - posts_data:/var/lib/postgresql/data
+      - ./scripts/init-posts-db.sql:/docker-entrypoint-initdb.d/init.sql
+
+  comments-db:
+    image: postgres:15
+    container_name: comments-db
+    environment:
+      POSTGRES_DB: comments_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sdebackend
+    ports:
+      - "5434:5432"
+    volumes:
+      - comments_data:/var/lib/postgresql/data
+      - ./scripts/init-comments-db.sql:/docker-entrypoint-initdb.d/init.sql
+
+  auth-service:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - DB_HOST=auth-db
+      - DB_PORT=5432
+      - DB_NAME=auth_db
+      - DB_USER=postgres
+      - DB_PASSWORD=sdebackend
+      - DATABASE_URL=postgresql://postgres:sdebackend@auth-db:5432/auth_db?schema=public
+      - JWT_SECRET=cloudsek_im_coming_for_you
+    depends_on:
+      - auth-db
+    restart: unless-stopped
+
+  post-service:
+    build:
+      context: ./post-service
+      dockerfile: Dockerfile
+    container_name: post-service
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - DB_HOST=posts-db
+      - DB_PORT=5432
+      - DB_NAME=posts_db
+      - DB_USER=postgres
+      - DB_PASSWORD=sdebackend
+      - DATABASE_URL=postgresql://postgres:sdebackend@posts-db:5432/posts_db?schema=public
+      - AUTH_SERVICE_URL=http://auth-service:3001
+    depends_on:
+      - posts-db
+      - auth-service
+    restart: unless-stopped
+
+  comment-service:
+    build:
+      context: ./comment-service
+      dockerfile: Dockerfile
+    container_name: comment-service
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - DB_HOST=comments-db
+      - DB_PORT=5432
+      - DB_NAME=comments_db
+      - DB_USER=postgres
+      - DB_PASSWORD=sdebackend
+      - DATABASE_URL=postgresql://postgres:sdebackend@comments-db:5432/comments_db?schema=public
+      - AUTH_SERVICE_URL=http://auth-service:3001
+      - POST_SERVICE_URL=http://post-service:3002
+    depends_on:
+      - comments-db
+      - auth-service
+      - post-service
+    restart: unless-stopped
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - AUTH_SERVICE_URL=http://auth-service:3001
+      - POST_SERVICE_URL=http://post-service:3002
+      - COMMENT_SERVICE_URL=http://comment-service:3003
+      - JWT_SECRET=cloudsek_im_coming_for_you
+    depends_on:
+      - auth-service
+      - post-service
+      - comment-service
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "8000:80"
+    depends_on:
+      - api-gateway
+    restart: unless-stopped
+
+volumes:
+  auth_data:
+  posts_data:
+  comments_data:
+
+networks:
+  default:
+    driver: bridge
