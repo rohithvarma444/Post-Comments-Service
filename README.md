@@ -4,6 +4,21 @@
 
 This project demonstrates a **microservice-based post and comments system** built as a technical assignment. The solution showcases modern software architecture principles, clean code practices, and production-ready development standards.
 
+## 📹 Demo & Architecture
+
+### Video Demo
+I have made a video explaining the system architecute of this assignment
+**[🎥 Loom Video Demo](https://www.loom.com/share/f003e6db179d4873ba1410c92014372c?sid=5d9d6257-bb9b-449a-af4e-3880d5ac0072)**
+
+### System Architecture
+![System Architecture](Screenshot%202025-09-21%20at%205.22.54%20PM.png)
+
+The diagram above shows the complete microservice architecture with:
+- **Frontend** (localhost:8000) interacting with **API Gateway** (localhost:8080)
+- **API Gateway** routing requests to three microservices: Auth, Post, and Comment Services
+- Each service having its own dedicated PostgreSQL database
+- Security implementations and database optimizations highlighted
+
 ## 🏗️ How This Was Built
 
 ### Development Approach
