@@ -11,7 +11,7 @@ I have made a video explaining the system architecute of this assignment
 **[🎥 Loom Video Demo](https://www.loom.com/share/f003e6db179d4873ba1410c92014372c?sid=5d9d6257-bb9b-449a-af4e-3880d5ac0072)**
 
 ### System Architecture
-![System Architecture](Screenshot%202025-09-21%20at%205.22.54%20PM.png)
+![System Architecture](https://github.com/rohithvarma444/Post-Comments-Service/blob/main/Screenshot%202025-09-21%20at%205.22.54%E2%80%AFPM.png)
 
 The diagram above shows the complete microservice architecture with:
 - **Frontend** (localhost:8000) interacting with **API Gateway** (localhost:8080)
