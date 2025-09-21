@@ -4,6 +4,13 @@
 
 This project demonstrates a **microservice-based post and comments system** built as a technical assignment. The solution showcases modern software architecture principles, clean code practices, and production-ready development standards.
 
+**Key Features:**
+- User authentication required for posting and commenting
+- Rich text editor for posts and comments
+- Comment on any user's posts (not just your own)
+- Nested comment replies with proper deletion protection
+- Real-time updates and responsive design
+
 ## 📹 Demo & Architecture
 
 ### Video Demo
@@ -101,7 +108,6 @@ The diagram above shows the complete microservice architecture with:
 
 ### Prerequisites
 - Docker and Docker Compose installed
-- Node.js 18+ (for local development)
 
 ### Quick Start
 ```bash
@@ -109,55 +115,77 @@ The diagram above shows the complete microservice architecture with:
 git clone <repository-url>
 cd Post-Comments-Service
 
-# Start all services
+# Start all services (automated setup)
+./start.sh
+```
+
+That's it! The start script will:
+- Automatically create the `.env` file from `env.example`
+- Start all Docker services
+- Display service URLs and useful commands
+
+### Manual Setup (Alternative)
+If you prefer manual setup:
+```bash
+# Copy environment file
+cp env.example .env
+
+# Start services
 docker-compose up --build -d
 
-# Check service status
+# Check status
 docker-compose ps
-
-# View logs
-docker-compose logs -f
 ```
 
 ### Access Points
 - **Frontend**: http://localhost:8000
 - **API Gateway**: http://localhost:8080
 
+### Quick User Guide
+1. **Start**: Run `./start.sh`
+2. **Open**: Go to http://localhost:8000
+3. **Register**: Create your account (required for posting/commenting)
+4. **Login**: Use your credentials
+5. **Post**: Create posts with rich text formatting
+6. **Comment**: Comment on any user's posts
+7. **Reply**: Join conversations with nested comments
+
+**Note**: Login required for posting/commenting. You can comment on any user's posts.
+
 ### Useful Commands
 ```bash
+# Start services
+./start.sh
+
 # Stop services
-docker-compose down
+./stop.sh
 
-# Restart a service
-docker-compose restart frontend
+# View logs
+docker-compose logs -f
 
-# View specific service logs
-docker-compose logs -f auth-service
+# Check status
+docker-compose ps
 ```
 
 ## 📖 How to Use
 
-### User Registration & Login
-1. Visit http://localhost:8000
-2. Click "Register" to create a new account
-3. Login with your credentials
+### Getting Started
+**Important**: You must register and login before you can create posts or add comments.
 
-### Creating Posts
-1. Click "Create Post" (requires login)
-2. Enter title and content with rich text formatting
-3. Use **bold**, *italic*, <u>underline</u>, and [links](url)
-4. Click "Create Post"
+### Basic Usage
+1. **Register**: Create account at http://localhost:8000
+2. **Login**: Use your credentials
+3. **Create Posts**: Click "Create Post" and use rich text editor
+4. **Comment**: Comment on any user's posts (not just your own)
+5. **Reply**: Create nested comment discussions
+6. **Manage**: Edit/delete your own content only
 
-### Managing Comments
-1. View any post to see comments
-2. Click "Add Comment" to post a comment
-3. Use rich text formatting in comments
-4. Reply to existing comments (nested replies supported)
-
-### Search & Navigation
-1. Use the search bar to find posts by title or content
-2. Navigate through pages using pagination
-3. Sort posts by date or title
+### Features
+- **Rich Text**: Bold, italic, underline, links in posts and comments
+- **Cross-User Comments**: Comment on any user's posts
+- **Nested Replies**: Multi-level comment discussions
+- **Search**: Find posts by title or content
+- **Pagination**: Navigate through posts and comments
 
 ### API Usage
 ```bash
