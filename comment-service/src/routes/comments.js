@@ -192,7 +192,17 @@ router.delete('/:id', requireAuth, validateCommentId, async (req, res) => {
       });
     }
 
-    const replyCount = existingComment.replies ? existingComment.replies.length : 0;
+    const allComments = await database.getPrisma().findAllComments();
+    const replies = allComments.filter(comment => comment.parentId === parseInt(id));
+    
+    if (replies.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Cannot delete comment with replies. Please delete replies first.',
+        hasReplies: true,
+        replyCount: replies.length
+      });
+    }
 
     await database.getPrisma().deleteComment(parseInt(id));
 
@@ -203,11 +213,11 @@ router.delete('/:id', requireAuth, validateCommentId, async (req, res) => {
       result: [{
         id: parseInt(id),
         post_id: existingComment.postId,
-        repliesDeleted: replyCount
+        repliesDeleted: 0
       }]
     });
   } catch (error) {
-('Delete comment error:', error);
+    console.error('Delete comment error:', error);
     res.status(500).json({
       success: false,
       message: 'Internal server error'

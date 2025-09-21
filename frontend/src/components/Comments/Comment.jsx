@@ -70,6 +70,7 @@ const Comment = ({
     }
 
     setLoading(true);
+    setError('');
 
     try {
       const response = await commentsAPI.deleteComment(comment.id);
@@ -80,7 +81,13 @@ const Comment = ({
         setError('Failed to delete comment');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to delete comment');
+      const errorMessage = err.response?.data?.message || 'Failed to delete comment';
+      
+      if (err.response?.data?.hasReplies) {
+        setError(`${errorMessage} This comment has ${err.response.data.replyCount} replies. Please delete the replies first.`);
+      } else {
+        setError(errorMessage);
+      }
     } finally {
       setLoading(false);
     }

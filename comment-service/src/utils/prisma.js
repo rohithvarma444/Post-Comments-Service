@@ -60,6 +60,10 @@ class DatabaseService {
   async deleteComment(id) {
     return this.comments.delete(id);
   }
+
+  async findAllComments() {
+    return Array.from(this.comments.values());
+  }
 }
 
 module.exports = new DatabaseService();

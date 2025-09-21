@@ -1,25 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-// const rateLimit = require('express-rate-limit'); // Disabled for development
 const config = require('./config/config');
 const { routeAuth } = require('./middleware/auth');
 const { authProxy, postsProxy, commentsProxy } = require('./middleware/proxy');
 
 const app = express();
 
-// Rate limiting disabled for development
-// const limiter = rateLimit({
-//   ...config.rateLimit,
-//   message: {
-//     success: false,
-//     message: 'Too many requests from this IP, please try again later.',
-//     error: 'RATE_LIMIT_EXCEEDED'
-//   }
-// });
-// app.use(limiter);
 
-// Enhanced CORS configuration
 app.use(cors({
   origin: config.cors.origin,
   credentials: config.cors.credentials,
@@ -28,7 +16,6 @@ app.use(cors({
   optionsSuccessStatus: 200
 }));
 
-// Handle preflight OPTIONS requests
 app.options('*', (req, res) => {
   res.status(200).end();
 });
