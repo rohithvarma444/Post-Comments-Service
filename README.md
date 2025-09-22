@@ -13,9 +13,14 @@ This project demonstrates a **microservice-based post and comments system** buil
 
 ## 📹 Demo & Architecture
 
-### Video Demo
-I have made a video explaining the system architecute of this assignment
-**[🎥 Loom Video Demo](https://www.loom.com/share/f003e6db179d4873ba1410c92014372c?sid=5d9d6257-bb9b-449a-af4e-3880d5ac0072)**
+### Video Demos
+**System Architecture Explanation**
+I have made a video explaining the system architecture of this assignment
+**[🎥 System Design Video](https://www.loom.com/share/f003e6db179d4873ba1410c92014372c?sid=5d9d6257-bb9b-449a-af4e-3880d5ac0072)**
+
+**Application Walkthrough**
+Complete walkthrough of the application features and user flow
+**[🎥 Application Walkthrough](https://www.loom.com/share/ae421f77a7a04d9f873e3a219df4b72d?sid=9867f860-f98f-4cfe-8d03-026557098e82)**
 
 ### System Architecture
 ![System Architecture](https://github.com/rohithvarma444/Post-Comments-Service/blob/main/Screenshot%202025-09-21%20at%205.22.54%E2%80%AFPM.png)
